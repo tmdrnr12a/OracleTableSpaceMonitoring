@@ -16,12 +16,12 @@ namespace OracleTableSpaceMonitoring
         #region Variables
 
         // Delay time to update UI
-        private readonly int delaySeconds = 5;
+        private readonly int delaySeconds = 60;
 
-        private readonly string enableTag = "EnableControls";
-
+        // Connect to DB
         private BackgroundWorker ConnectWorker = null;
 
+        // Refresh UI
         private Thread thRefresh = null;
 
         #endregion Variables
@@ -53,11 +53,12 @@ namespace OracleTableSpaceMonitoring
 
         #region Methods
 
+        /// <summary>
+        /// Initialize form
+        /// </summary>
         private void InitForm()
         {
             SetConfigImage();
-
-            SetControlTag();
 
             InitTableSpaceList();
 
@@ -66,6 +67,9 @@ namespace OracleTableSpaceMonitoring
             uiFlp_Main.AutoScroll = true;
         }
 
+        /// <summary>
+        /// Set image of configuration butoon
+        /// </summary>
         private void SetConfigImage()
         {
             uiBtn_Config.ImageFocusIn = Properties.Resources.ConfigMouseMove;
@@ -73,11 +77,9 @@ namespace OracleTableSpaceMonitoring
             uiBtn_Config.ImageDefault = Properties.Resources.ConfigDefault;
         }
 
-        private void SetControlTag()
-        {
-            uiSC_Main.Tag = this.enableTag;
-        }
-
+        /// <summary>
+        /// Initialize TableSpace List
+        /// </summary>
         private void InitTableSpaceList()
         {
             uiChkList_TableSpace.CheckOnClick = true;
@@ -86,11 +88,17 @@ namespace OracleTableSpaceMonitoring
             uiChkList_TableSpace.Items.Clear();
         }
 
+        /// <summary>
+        /// Fix splitter distance of SplitContainer 
+        /// </summary>
         private void FixDistance()
         {
             uiSC_Main.SplitterDistance = 250;
         }
 
+        /// <summary>
+        /// Connect to DB 
+        /// </summary>
         private void ConnectDB()
         {
             if (this.ConnectWorker == null)
@@ -103,33 +111,29 @@ namespace OracleTableSpaceMonitoring
             this.ConnectWorker.RunWorkerAsync();
         }
 
-        private void EnableControls(bool flag)
-        {
-            if (uiSC_Main.InvokeRequired == true)
-            {
-                uiSC_Main.Invoke(new MethodInvoker(delegate ()
-                {
-                    uiSC_Main.Enabled = flag;
-                }));
-            }
-            else
-            {
-                uiSC_Main.Enabled = flag;
-            }
-        }
-
+        /// <summary>
+        /// Set TableSpace list
+        /// </summary>
+        /// <param name="ds"></param>
         private void SetTableSpaceList(DataSet ds)
         {
             object[] arrObj = ds.Tables[0].Select().Select(x => x["NAME"]).ToArray();
             uiChkList_TableSpace.Items.AddRange(arrObj);         
         }
 
+        /// <summary>
+        /// Select all TableSpace 
+        /// </summary>
         private void SetAllCheck()
         {
             for (int i = 0; i < uiChkList_TableSpace.Items.Count; i++)
                 uiChkList_TableSpace.SetItemChecked(i, true);
         }
 
+        /// <summary>
+        /// Create TableSpace control
+        /// </summary>
+        /// <param name="ds"></param>
         private void CreateTableSpaceControl(DataSet ds)
         {
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -146,6 +150,9 @@ namespace OracleTableSpaceMonitoring
             }
         }
 
+        /// <summary>
+        /// Refresh UI thread
+        /// </summary>
         private void RefreshUI()
         {
             if (this.thRefresh != null && this.thRefresh.IsAlive == true)
@@ -171,6 +178,9 @@ namespace OracleTableSpaceMonitoring
             }
         }
 
+        /// <summary>
+        /// Refresh TableSpace size
+        /// </summary>
         private void RefreshSize()
         {
             DataSet ds = DatabaseProcessor.Instance.GetTableSpaceList();
@@ -202,10 +212,13 @@ namespace OracleTableSpaceMonitoring
 
         #region Events
 
+        /// <summary>
+        /// Try to connect DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ConnectWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            EnableControls(false);
-
             while (true)
             {
                 try
@@ -230,12 +243,15 @@ namespace OracleTableSpaceMonitoring
 
                 CreateTableSpaceControl(ds);
 
-                EnableControls(true);
-
                 RefreshUI();
             }
         }
 
+        /// <summary>
+        /// Show according to check status
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UiChkList_TableSpace_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (uiFlp_Main.Controls.Count == 0)

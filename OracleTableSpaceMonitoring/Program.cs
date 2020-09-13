@@ -13,6 +13,7 @@ namespace OracleTableSpaceMonitoring
         [STAThread]
         static void Main()
         {
+            // Config File
             FileManager.FileName = @"Config.ini";
 
             //Application.EnableVisualStyles();
