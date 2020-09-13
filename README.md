@@ -1,4 +1,5 @@
 [OracleTableSpaceMonitoring]
+
 오라클 테이블스페이스 용량 모니터링 (Oracle TableSpace Monitoring)
 
 [Result]
