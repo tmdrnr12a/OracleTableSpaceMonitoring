@@ -14,9 +14,6 @@ namespace OracleTableSpaceMonitoring.Processor
     {
         #region " Variables "
 
-
-
-
         #endregion " Variables End"
 
         #region " Create & Load & Shown "
@@ -25,6 +22,10 @@ namespace OracleTableSpaceMonitoring.Processor
 
         #region " Methods "
 
+        /// <summary>
+        /// Get TableSpace infomation
+        /// </summary>
+        /// <returns></returns>
         public DataSet GetTableSpaceList()
         {
             string query =

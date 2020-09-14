@@ -168,6 +168,7 @@ namespace OracleTableSpaceMonitoring
             this.thRefresh.Start();
         }
 
+
         private void RefreshTableSpace()
         {
             while (true)
@@ -269,6 +270,12 @@ namespace OracleTableSpaceMonitoring
                 }
             }
         }
+
+        /// <summary>
+        /// Oracle instance exception event
+        /// </summary>
+        /// <param name="LocationID"></param>
+        /// <param name="ex"></param>
         private void Instance_ExceptionEvent(string LocationID, Exception ex)
         {
             string msg = $"[{LocationID}] - {ex.Message}]";

@@ -49,6 +49,9 @@ namespace OracleTableSpaceMonitoring.Controls
 
         #region Methods
 
+        /// <summary>
+        /// Set standard unit value
+        /// </summary>
         private void SetUnit()
         {
             this.KBYTE = 1024;
@@ -70,12 +73,18 @@ namespace OracleTableSpaceMonitoring.Controls
                 this.TABLESPACE_UNIT = E_UNIT.UNKNOWN;
         }
 
+        /// <summary>
+        /// Set icon
+        /// </summary>
         private void SetIcon()
         {
             uiPic_Image.BackgroundImage = Properties.Resources.Database;
             uiPic_Image.BackgroundImageLayout = ImageLayout.Zoom;
         }
 
+        /// <summary>
+        /// Set name, color.... of TableSpace 
+        /// </summary>
         private void SetInfo()
         {
             uiLab_Name.Text = this.TABLESPACE_NAME;
@@ -87,6 +96,9 @@ namespace OracleTableSpaceMonitoring.Controls
             uiProg_Capacity.TextColor = Color.Black;
         }
 
+        /// <summary>
+        /// Set TableSpace capacity on UI
+        /// </summary>
         public void SetCapacity()
         {
             SetProgressValue(this.PERCENTAGE);
@@ -95,6 +107,10 @@ namespace OracleTableSpaceMonitoring.Controls
             SetUsageText();
         }
 
+        /// <summary>
+        /// Set value of ProgressBar 
+        /// </summary>
+        /// <param name="value"></param>
         private void SetProgressValue(int value)
         {
             if (uiProg_Capacity.InvokeRequired == true)
@@ -110,6 +126,10 @@ namespace OracleTableSpaceMonitoring.Controls
             }
         }
 
+        /// <summary>
+        /// Set color of ProgressBar
+        /// </summary>
+        /// <param name="value"></param>
         private void SetProgressColor(int value)
         {
             if (0 <= value && value < 25)
@@ -125,6 +145,9 @@ namespace OracleTableSpaceMonitoring.Controls
                 uiProg_Capacity.ProgressColor = Color.FromArgb(201, 92, 84);
         }
 
+        /// <summary>
+        /// Set usage text of ProgressBar
+        /// </summary>
         private void SetUsageText()
         {
             double unitValue = GetUnitValue();
